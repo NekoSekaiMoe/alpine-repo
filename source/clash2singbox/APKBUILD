@@ -1,0 +1,41 @@
+# Maintainer: dabao1955 <dabao1955@163.com>
+pkgname=clash2singbox
+pkgver=0.1.4
+pkgrel=0
+pkgdesc="Convert configuration files or links in clash.meta format to sing-box format"
+url="clash2sfa-xmdhs.koyeb.app"
+arch="aarch64"
+_carch="arm64"
+_flavor="xiaomi-raphael"
+license="MIT"
+makedepends="
+	bash
+	go
+"
+
+# Source
+source="
+	v0.1.4.tar.gz::https://github.com/xmdhs/clash2singbox/archive/refs/tags/v0.1.4.tar.gz"
+
+builddir="$srcdir/$pkgname-$pkgver"
+
+prepare() {
+	go mod download
+}
+
+build() {
+	go build -trimpath -ldflags "-w -s"
+}
+
+package() {
+	mkdir -p "$pkgdir"/usr
+	mkdir -p "$pkgdir"/usr/bin
+
+	install -Dm644 "$builddir/clash2singbox" \
+		"$pkgdir/usr/bin/clash2singbox"
+}
+
+
+sha512sums="
+b31ec6958dc701d030bfd4ba5cb50f8fc574b8e9d9cdf57b42c338be6058410cb74876d06604e76c7c0a7a4d059020d222a1763104e9a8b634b420b025ff6b4f  v0.1.4.tar.gz
+"
