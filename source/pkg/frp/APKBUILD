@@ -1,0 +1,48 @@
+# Maintainer: dabao1955 <dabao1955@163.com>
+pkgname=frp
+pkgver=0.56.0
+pkgrel=0
+pkgdesc="A fast reverse proxy to help you expose a local server behind a NAT or firewall to the internet."
+url="https://github.com/fatedier/frp"
+arch="aarch64"
+_carch="arm64"
+license="Apache-2.0"
+makedepends="
+	bash
+	go
+	wget
+"
+
+# Source
+source="
+	v0.56.0.tar.gz::https://github.com/fatedier/frp/archive/refs/tags/v0.56.0.tar.gz"
+
+builddir="$srcdir/$pkgname-$pkgver"
+
+prepare() {
+	go mod download
+}
+
+build() {
+	make
+}
+
+package() {
+	mkdir -p "$pkgdir"/usr
+	mkdir -p "$pkgdir"/usr/bin	        
+	mkdir -pv "$pkgdir"/etc
+	mkdir -pv "$pkgdir"/etc/frp
+
+	wget https://github.com/fatedier/frp/raw/dev/conf/frpc_full_example.toml -O "$pkgdir"/etc/frp/frpc.toml
+	wget https://github.com/fatedier/frp/raw/dev/conf/frps_full_example.toml -O "$pkgdir"/etc/frp/frps.toml
+
+	install -Dm644 "$builddir/bin/frpc" \
+		"$pkgdir/usr/bin/frpc"
+	install -Dm644 "$builddir/bin/frps" \
+		"$pkgdir/usr/bin/frps"
+}
+
+
+sha512sums="
+883dce220aa78296f2b7eb9d64b3d1598bc2df436c52a48bc813d725a6f8fa43028359b0507bf4a586a29f4739310474047abfefd46249c0c9942990ceac0e2d  v0.56.0.tar.gz
+"

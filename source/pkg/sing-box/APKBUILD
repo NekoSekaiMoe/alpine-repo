@@ -1,0 +1,40 @@
+# Maintainer: dabao1955 <dabao1955@163.com>
+pkgname=sing-box
+pkgver=1.8.9
+pkgrel=0
+pkgdesc="https://sing-box.sagernet.org/"
+url="https://sing-box.sagernet.org/"
+arch="aarch64"
+_carch="arm64"
+license="MIT"
+makedepends="
+	bash
+	go
+"
+
+# Source
+source="
+	v1.8.9.tar.gz::https://github.com/SagerNet/sing-box/archive/refs/tags/v1.8.9.tar.gz"
+
+builddir="$srcdir/$pkgname-$pkgver"
+
+prepare() {
+	go mod download
+}
+
+build() {
+	make
+}
+
+package() {
+	mkdir -p "$pkgdir"/usr
+	mkdir -p "$pkgdir"/usr/bin
+
+	install -Dm644 "$builddir/sing-box" \
+		"$pkgdir/usr/bin/sing-box"
+}
+
+
+sha512sums="
+cffffaef6ca0c4ac928fc905ec2a84a32a3c5f92613bd50e7b0f7a1362f0e304a5e7adda0adfdcc400f2324a515ee76b2bae2dc3ef18a178402af68356c0da4b  v1.8.9.tar.gz
+"

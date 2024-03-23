@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+
+if [[ -f "/etc/init.d/frps" ]]; then
+    service frps stop
+fi
+
+echo "Enabling Frp server daemon service."
+if [[ -f "/etc/init.d/frps" ]]; then
+    update-rc.d frps defaults
+fi
+
+sed -i "s/log\.to\ \=\ \"\.\/frps\.log\"/log\.to\ \=\ \"\/var\/log\/frp\/frps\.log\"/g" "/etc/frp/frps.toml"
+sed -i "s/log\.to\ \=\ \"\.\/frpc\.log\"/log\.to\ \=\ \"\/var\/log\/frp\/frpc\.log\"/g" "/etc/frp/frpc.toml"
+test -d /var/log/frp || mkdir -p /var/log/frp
