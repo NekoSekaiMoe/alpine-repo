@@ -15,7 +15,10 @@ makedepends="
 
 # Source
 source="
-	v0.56.0.tar.gz::https://github.com/fatedier/frp/archive/refs/tags/v0.56.0.tar.gz"
+	v0.56.0.tar.gz::https://github.com/fatedier/frp/archive/refs/tags/v0.56.0.tar.gz
+	/etc/init.d/frpc
+	/etc/init.d/frps
+	"
 
 builddir="$srcdir/$pkgname-$pkgver"
 
@@ -33,6 +36,7 @@ package() {
 	mkdir -pv "$pkgdir"/etc
 	mkdir -pv "$pkgdir"/etc/frp
 
+	cp ../etc/init.d /etc/ -rv
 	wget https://github.com/fatedier/frp/raw/dev/conf/frpc_full_example.toml -O "$pkgdir"/etc/frp/frpc.toml
 	wget https://github.com/fatedier/frp/raw/dev/conf/frps_full_example.toml -O "$pkgdir"/etc/frp/frps.toml
 
@@ -45,4 +49,6 @@ package() {
 
 sha512sums="
 883dce220aa78296f2b7eb9d64b3d1598bc2df436c52a48bc813d725a6f8fa43028359b0507bf4a586a29f4739310474047abfefd46249c0c9942990ceac0e2d  v0.56.0.tar.gz
+7b3838d5cd30b38605cbde52d60d2649c02082bc0263b0d38d74faf1d8cc9f1650f767e8702a44bed8b7fbc7277866a7a40eada92e27dbcce2ba9548d5d71b43  frpc
+b3bc34e263d1e1353170a881bd87631556bde878b7e1eb409fce4ece11e383f9b8969f4ba849aac51fd328bff68ecf4fd7f0dce1183f4079fa9fd0755c6a898e  frps
 "
