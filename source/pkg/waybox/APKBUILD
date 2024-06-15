@@ -1,0 +1,48 @@
+# Maintainer: dabao1955 <dabao1955@163.com>
+pkgname=waybox
+pkgver=0.2.2
+pkgrel=0
+pkgdesc="A openbox clone on Wayland."
+url="https://github.com/wizbright/waybox"
+arch="aarch64"
+_carch="arm64"
+license="MIT"
+makedepends="
+	libevdev-dev
+	libinput-dev
+	libxkbcommon-dev
+	libxml2-dev
+	meson
+	musl-dev
+	wayland-dev 
+	wayland-protocols 
+	wlroots-dev 
+	xwayland
+	build-base
+	ninja-build
+"
+
+# Source
+source="
+	0.2.2.tar.gz::https://github.com/wizbright/waybox/archive/refs/tags/0.2.2.tar.gz
+	"
+
+builddir="$srcdir/$pkgname-$pkgver"
+
+prepare() {
+	meson setup build-gcc
+}
+
+build() {
+	ninja -j8 -v -C build-gcc
+}
+
+package() {
+	DESTDIR=$pkgdir ninja -C build-gcc install
+	cd $pkgdir && mv usr/local/* usr/ && rm -rf usr/local
+}
+
+
+sha512sums="
+4061eda90349ccadc064c70329af7ad31b6210a19359da078d508d396a79a644a119f98e98c14aa7592e1ef35d3fdb79f1c0c92613c8899a787b0d4e3b00f0cb  0.2.2.tar.gz
+"
